@@ -1,12 +1,20 @@
 import hotelsData from "./scripts/data.js";
 const today = new Date();
 
+function GetPrices(props) {
+  let icons = [];
+  for (let i = 1; i <= 4; i++) {
+    if(props.prices>= i){icons = icons +`$`}else{icons = icons + "-"};
+  }
+  return <span>{icons}</span>;
+}
+
 function Card(props) {
   const prices = Array.from(new Array(props.price));
+
   return (
     <div className="card">
       <div className="card-image">
-        {" "}
         <img src={props.photo}></img>
       </div>
       <div className="card-title"> {props.name}</div>
@@ -26,7 +34,9 @@ function Card(props) {
           </div>
 
           <div className="icons-price">
-            <span>{prices.map((price) => " $ ")}</span>
+            <div>
+              <GetPrices prices={props.price} />
+            </div>
           </div>
         </div>
       </div>
@@ -39,7 +49,7 @@ function Card(props) {
 
 //MAIN COMPONENT
 
-const Main = (props) => (
+const Main = () => (
   <div className="main">
     {hotelsData.map((hotel) => (
       <Card
@@ -59,9 +69,23 @@ const Main = (props) => (
 
 function DateSelect(props) {
   {
+    const inputLimit = new Date()
+      .toLocaleDateString("es-AR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+      .split("/")
+      .reverse()
+      .join("-");
     return (
       <div>
-        <input type="date" name={props.name} onChange={props.date}></input>
+        <input
+          type="date"
+          name={props.name}
+          onChange={props.date}
+          min={inputLimit}
+        ></input>
       </div>
     );
   }
@@ -69,30 +93,52 @@ function DateSelect(props) {
 
 //SELECT COMPONENT
 
-class OptionSelect extends React.Component {
-  render() {
-    return (
-      <select>
-        <option value="0">Todos los paises</option>
-        <option value="1"> pais 1</option>
-        <option value="2"> pais 2</option>
-        <option value="3"> pais 3</option>
-        <option value="4"> pais 4</option>
-      </select>
-    );
-  }
+function OptionSelect(props) {
+
+  //armo un array con la prop que deseo usar como filtro, lo ordeno y elimino los elementos repetidos.
+  const filterProp = [...new Set(Array.from(props.filter))];
+  filterProp.sort((a, b) => a - b);
+
+  return (
+    <select onChange={props.select}>
+      <option>{`Cualquier ${props.name}`}</option>
+      {filterProp.map(
+        (valorAMostrar) => <option>{valorAMostrar}</option>
+      )}
+    </select>
+  );
 }
+
 // FILTERS COMPONENT
 
 function FiltersContainer(props) {
+  const { date, select } = props;
+  const price = hotelsData.map((element, index) => element.price);
+  const rooms = hotelsData.map((element, index) => element.rooms);
+  const country = hotelsData.map((element, index) => element.country);
+
   return (
     <div className="filters-container">
-      <DateSelect date={props.date} name="desde" />
-      <DateSelect date={props.date} name="hasta" />
-
-      <OptionSelect />
-      <OptionSelect />
-      <OptionSelect />
+      <DateSelect date={date} name="desde" />
+      <DateSelect date={date} name="hasta" />
+      <OptionSelect
+        select={select}
+        filter={country}
+        name="pais"
+        />
+       
+      <OptionSelect
+        select={select}
+        filter={price}
+        name="precio"
+        
+      />
+      <OptionSelect
+        select={select}
+        filter={rooms}
+        name="tamaño"
+       
+      />
     </div>
   );
 }
@@ -100,6 +146,7 @@ function FiltersContainer(props) {
 // HEADER COMPONENT
 
 function Header(props) {
+  const { desde, hasta } = props.filters;
   const options = { weekday: "long", month: "long", day: "numeric" };
   const optionsTwo = {
     weekday: "long",
@@ -111,11 +158,15 @@ function Header(props) {
   return (
     <div className="header">
       <h1 className="title">Hoteles</h1>
-      <p>
-        Desde el
-        <b> {props.filters.desde.toLocaleString("es-AR", options)}</b>, hasta el
-        <b> {props.filters.hasta.toLocaleString("es-AR", optionsTwo)}</b>.
-      </p>
+      {desde && hasta ? (
+        <p>
+          Desde el
+          <b> {desde.toLocaleString("es-AR", options)}</b>, hasta el
+          <b> {hasta.toLocaleString("es-AR", optionsTwo)}</b>.
+        </p>
+      ) : (
+        <p>Por favor, seleccione las fechas en que desea reservar.</p>
+      )}
     </div>
   );
 }
@@ -124,7 +175,7 @@ function Header(props) {
 
 export default class App extends React.Component {
   state = {
-    desde: today,
+    desde: "",
     hasta: "",
     pais: undefined,
     ubicacion: undefined,
@@ -137,12 +188,20 @@ export default class App extends React.Component {
     });
   };
 
+  handlerSelect = (e) => {
+    console.log(e.target.value);
+  };
+
   render() {
     return (
       <div>
         <Header filters={this.state} />
 
-        <FiltersContainer filters={this.state} date={this.handlerDate} />
+        <FiltersContainer
+          filters={this.state}
+          date={this.handlerDate}
+          select={this.handlerSelect}
+        />
 
         <Main filters={this.state} />
       </div>
