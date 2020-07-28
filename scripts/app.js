@@ -1,17 +1,23 @@
 import hotelsData from "./scripts/data.js";
 const today = new Date();
+//Creo que la lógica no está tan mal, pero no puedo renderizar los iconos de
+//fontawesome, sólo me devuelve strings. Tengo un problema de sintáxis que no puedo resolver.
+//Mi idea era: por cada iteración del for,
+//pintar un ícono blanco o gris, según el valor de props.price.
 
 function GetPrices(props) {
   let icons = [];
   for (let i = 1; i <= 4; i++) {
-    if(props.prices>= i){icons = icons +`$`}else{icons = icons + "-"};
+    if (props.prices >= i) {
+      icons = icons + `$`;
+    } else {
+      icons = icons + "-";
+    }
   }
   return <span>{icons}</span>;
 }
 
 function Card(props) {
-  const prices = Array.from(new Array(props.price));
-
   return (
     <div className="card">
       <div className="card-image">
@@ -30,7 +36,7 @@ function Card(props) {
         <div className="icons-bottom">
           <div className="icon-text">
             <i className="fas fa-bed"></i>
-            <span> {props.rooms}</span>
+            <span> {props.rooms} habitaciones</span>
           </div>
 
           <div className="icons-price">
@@ -41,7 +47,12 @@ function Card(props) {
         </div>
       </div>
       <div className="button-reserve">
-        <a href=""> Reservar </a>
+        <a
+          href=""
+          onClick={() => alert("Esta funcionalidad no es parte del ejercicio")}
+        >
+          Reservar
+        </a>
       </div>
     </div>
   );
@@ -49,22 +60,25 @@ function Card(props) {
 
 //MAIN COMPONENT
 
-const Main = () => (
-  <div className="main">
-    {hotelsData.map((hotel) => (
-      <Card
-        key={hotel.slug}
-        name={hotel.name}
-        photo={hotel.photo}
-        description={hotel.description}
-        country={hotel.country}
-        rooms={hotel.rooms}
-        price={hotel.price}
-      />
-    ))}
-    ,
-  </div>
-);
+const Main = (props) => {
+  return (
+    <div className="main">
+      {hotelsData.map((hotel) => (
+        <Card
+          key={uuidv4()}
+          name={hotel.name}
+          photo={hotel.photo}
+          description={hotel.description}
+          country={hotel.country}
+          rooms={hotel.rooms}
+          price={hotel.price}
+          desde={hotel.availabilityFrom}
+          hasta={hotel.availabilityTo}
+        />
+      ))}
+    </div>
+  );
+};
 //DATE COMPONENT
 
 function DateSelect(props) {
@@ -93,18 +107,20 @@ function DateSelect(props) {
 
 //SELECT COMPONENT
 
-function OptionSelect(props) {
+//Tengo un problema con la key del map en este componente. Intenté usar el uuid por cdn y me lo toma bien.
+//Pero sintácticamente no sé cómo hacer para que funcione sin que me tire el warning.
 
+function OptionSelect(props) {
   //armo un array con la prop que deseo usar como filtro, lo ordeno y elimino los elementos repetidos.
   const filterProp = [...new Set(Array.from(props.filter))];
   filterProp.sort((a, b) => a - b);
 
   return (
-    <select onChange={props.select}>
-      <option>{`Cualquier ${props.name}`}</option>
-      {filterProp.map(
-        (valorAMostrar) => <option>{valorAMostrar}</option>
-      )}
+    <select onChange={props.select} name={props.name}>
+      <option value="">{`Cualquier ${props.name}`}</option>
+      {filterProp.map((valorAMostrar) => (
+        <option>{valorAMostrar}</option>
+      ))}
     </select>
   );
 }
@@ -113,32 +129,17 @@ function OptionSelect(props) {
 
 function FiltersContainer(props) {
   const { date, select } = props;
-  const price = hotelsData.map((element, index) => element.price);
-  const rooms = hotelsData.map((element, index) => element.rooms);
-  const country = hotelsData.map((element, index) => element.country);
+  const price = hotelsData.map((element) => element.price);
+  const rooms = hotelsData.map((element) => element.rooms);
+  const country = hotelsData.map((element) => element.country);
 
   return (
     <div className="filters-container">
       <DateSelect date={date} name="desde" />
       <DateSelect date={date} name="hasta" />
-      <OptionSelect
-        select={select}
-        filter={country}
-        name="pais"
-        />
-       
-      <OptionSelect
-        select={select}
-        filter={price}
-        name="precio"
-        
-      />
-      <OptionSelect
-        select={select}
-        filter={rooms}
-        name="tamaño"
-       
-      />
+      <OptionSelect select={select} filter={country} name="pais" />
+      <OptionSelect select={select} filter={price} name="precio" />
+      <OptionSelect select={select} filter={rooms} name="tamaño" />
     </div>
   );
 }
@@ -173,15 +174,15 @@ function Header(props) {
 
 //APP COMPONENT
 
+const result = "";
+
 export default class App extends React.Component {
   state = {
     desde: "",
     hasta: "",
     pais: undefined,
-    ubicacion: undefined,
     habitaciones: undefined,
   };
-
   handlerDate = (e) => {
     this.setState({
       [e.target.name]: new Date(e.target.value.replace(/-/g, "/")),
@@ -189,7 +190,7 @@ export default class App extends React.Component {
   };
 
   handlerSelect = (e) => {
-    console.log(e.target.value);
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   render() {

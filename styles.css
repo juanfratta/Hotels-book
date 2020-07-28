@@ -1,121 +1,121 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  .header {
-    background: #00d1b2;
-    height: 20%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 2em;
-    color: white;
-    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
-  }
-  
-  .filters-container {
-    background: #209cee;
-    color: white;
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
-  
-  .filters-container select,
-  input {
-    padding: 5px;
-    color: grey;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .main {
-    margin: 50px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-  
-  .card {
-    width: 300px;
-    height: 100%;
-    border: 1px solid rgb(199, 196, 196);
-    font-family: sans-serif;
-    color: grey;
-    position: relative;
-    margin-bottom: 2rem;
-  }
-  
-  .card-image img {
-    width: 100%;
-  }
-  
-  .card-title {
-    font-weight: 900;
-    color: rgb(90, 89, 89);
-    padding: 10px;
-  }
-  
-  .card-text {
-    font-size: 0.8em;
-    padding: 10px;
-    line-height: 1.5em;
-  }
-  
-  .card-icons {
-    padding: 10px;
-    font-size: 0.8em;
-  }
-  
-  .icons-bottom {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .icon-text {
-    display: inline-block;
-    background: lightgrey;
-    padding: 0px 5px 0px 0px;
-    border-radius: 5px;
-    margin: 5px 0;
-  }
-  
-  .fa-map-marker {
-    background: #209cee;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-  }
-  
-  .icons-price {
-    background: #209cee;
-    padding: 5px 10px;
-    color: white;
-    border-radius: 5px;
-    margin: 5px 0;
-  }
-  
-  .fa-bed {
-    background: #209cee;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-  }
-  
-  .button-reserve {
-    background: #00d1b2;
-    color: white;
-    padding: 15px 0;
-    text-align: center;
-  }
-  
-  .button-reserve a {
-    text-decoration: none;
-    color: white;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.header {
+  background: #00d1b2;
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2em;
+  color: white;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.filters-container {
+  background: #209cee;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.filters-container select,
+input {
+  padding: 5px;
+  color: grey;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+}
+
+.main {
+  margin: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.card {
+  width: 300px;
+  height: 100%;
+  border: 1px solid rgb(199, 196, 196);
+  font-family: sans-serif;
+  color: grey;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.card-image img {
+  width: 100%;
+}
+
+.card-title {
+  font-weight: 900;
+  color: rgb(90, 89, 89);
+  padding: 10px;
+}
+
+.card-text {
+  font-size: 0.8em;
+  padding: 10px;
+  line-height: 1.5em;
+}
+
+.card-icons {
+  padding: 10px;
+  font-size: 0.8em;
+}
+
+.icons-bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.icon-text {
+  display: inline-block;
+  background: lightgrey;
+  padding: 0px 5px 0px 0px;
+  border-radius: 5px;
+  margin: 5px 0;
+  height: 22px;
+}
+
+.fa-map-marker {
+  background: #209cee;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.icons-price {
+  background: #209cee;
+  padding: 5px 10px;
+  color: white;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+.fa-bed {
+  background: #209cee;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.button-reserve {
+  background: #00d1b2;
+  color: white;
+  padding: 15px 0;
+  text-align: center;
+}
+
+.button-reserve a {
+  text-decoration: none;
+  color: white;
+}
