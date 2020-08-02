@@ -46,7 +46,7 @@ input {
   height: 100%;
   border: 1px solid rgb(199, 196, 196);
   font-family: sans-serif;
-  color: grey;
+  /*color: grey;*/
   position: relative;
   margin-bottom: 2rem;
 }
@@ -99,6 +99,10 @@ input {
   color: white;
   border-radius: 5px;
   margin: 5px 0;
+}
+
+.dollar-opaque {
+  opacity: 0.2;
 }
 
 .fa-bed {

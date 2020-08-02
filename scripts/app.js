@@ -1,21 +1,21 @@
 import hotelsData from "./scripts/data.js";
-const today = new Date();
-//Creo que la lógica no está tan mal, pero no puedo renderizar los iconos de
-//fontawesome, sólo me devuelve strings. Tengo un problema de sintáxis que no puedo resolver.
-//Mi idea era: por cada iteración del for,
-//pintar un ícono blanco o gris, según el valor de props.price.
 
-function GetPrices(props) {
-  let icons = [];
-  for (let i = 1; i <= 4; i++) {
-    if (props.prices >= i) {
-      icons = icons + `$`;
-    } else {
-      icons = icons + "-";
-    }
-  }
-  return <span>{icons}</span>;
-}
+const Price = () => <i className="fas fa-dollar-sign"></i>;
+const PriceTwo = () => <i className="fas fa-dollar-sign dollar-opaque"></i>;
+
+const GetPrices = (props) =>
+  Array.from(new Array(4), (n, index) =>
+    //En realidad acá quise usar sólo el componente Price, y hacer algo así como:
+    //<Price key={`price-${index}`} style={{ opacity: index < props.prices ? 1.0 : 0.2 }} />)
+    //Si lo reviso con React Dev Tools me pasa bien la prop y no me da ningun error,
+    //pero no me genera el inline style ni ningún cambio.
+    //La solución medio pedorra que encontré es usar dos componentes :(
+    index < props.prices ? (
+      <Price key={`price-${index}`} />
+    ) : (
+      <PriceTwo key={`price-${index}`} />
+    )
+  );
 
 function Card(props) {
   return (
@@ -41,7 +41,7 @@ function Card(props) {
 
           <div className="icons-price">
             <div>
-              <GetPrices prices={props.price} />
+              {<GetPrices key={`prices-${uuidv4()}`} prices={props.price} />}{" "}
             </div>
           </div>
         </div>
@@ -49,7 +49,9 @@ function Card(props) {
       <div className="button-reserve">
         <a
           href=""
-          onClick={() => alert("Esta funcionalidad no es parte del ejercicio")}
+          onClick={() =>
+            alert("Esta funcionalidad no es parte del ejercicio :(")
+          }
         >
           Reservar
         </a>
@@ -60,25 +62,28 @@ function Card(props) {
 
 //MAIN COMPONENT
 
-const Main = (props) => {
-  return (
-    <div className="main">
-      {hotelsData.map((hotel) => (
-        <Card
-          key={uuidv4()}
-          name={hotel.name}
-          photo={hotel.photo}
-          description={hotel.description}
-          country={hotel.country}
-          rooms={hotel.rooms}
-          price={hotel.price}
-          desde={hotel.availabilityFrom}
-          hasta={hotel.availabilityTo}
-        />
-      ))}
-    </div>
-  );
-};
+class Main extends React.Component {
+  render() {
+    return (
+      <div className="main">
+        {hotelsData.map((hotel) => (
+          <Card
+            key={uuidv4()}
+            name={hotel.name}
+            photo={hotel.photo}
+            description={hotel.description}
+            country={hotel.country}
+            rooms={hotel.rooms}
+            price={hotel.price}
+            desde={hotel.availabilityFrom}
+            hasta={hotel.availabilityTo}
+          />
+        ))}
+      </div>
+    );
+  }
+}
+
 //DATE COMPONENT
 
 function DateSelect(props) {
@@ -119,7 +124,7 @@ function OptionSelect(props) {
     <select onChange={props.select} name={props.name}>
       <option value="">{`Cualquier ${props.name}`}</option>
       {filterProp.map((valorAMostrar) => (
-        <option>{valorAMostrar}</option>
+        <option key={uuidv4()}>{valorAMostrar}</option>
       ))}
     </select>
   );
@@ -174,15 +179,15 @@ function Header(props) {
 
 //APP COMPONENT
 
-const result = "";
-
 export default class App extends React.Component {
   state = {
     desde: "",
     hasta: "",
     pais: undefined,
     habitaciones: undefined,
+    precio: undefined,
   };
+
   handlerDate = (e) => {
     this.setState({
       [e.target.name]: new Date(e.target.value.replace(/-/g, "/")),
