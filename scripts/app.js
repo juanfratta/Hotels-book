@@ -64,7 +64,16 @@ function Card(props) {
 
 class Main extends React.Component {
   render() {
-    /* function filters() {
+    /* 
+    ACÁ NECESITARIA HACER QUE LO FILTROS FUNCIONEN EN CONJUNTO, 
+    PERO ME TIRA ERROR CUALQUIER RETURN QUE PONGA.
+    LA OTRA OPCIÓN QUE SE ME OCURRIÓ ERA SETEAR EL ARRAY DE OBJETOS EN EL STATE USANDO comoponentDidMount,
+    Y LUEGO CADA VEZ QUE ME LLEGA UN FILTRO POR PROP, LLAMAR A componentDidUpdate LLAMAR AL prevState, 
+    y ACTUALIZAR LOS CAMBIOS MEDIANTE UN FILTER PARA CADA OCASION. Y OBVIAMENTE EL .MAP HACERLO SOBRE EL ARRAY QUE
+    ESTÁ DENTRO DEL STATE, PERO HAY TENGO UN PROBLEMA DE SINTAXIS. NO SE COMO INTERAR SOBRE EL ARRAY DENTRO DEL STATE.
+    
+    
+    function filters() {
       let filtrado = hotelsData;
 
       const { pais, precio, tamaño } = this.props.filters;
