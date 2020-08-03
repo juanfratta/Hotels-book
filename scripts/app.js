@@ -64,9 +64,48 @@ function Card(props) {
 
 class Main extends React.Component {
   render() {
+    /* function filters() {
+      let filtrado = hotelsData;
+
+      const { pais, precio, tamaño } = this.props.filters;
+
+      if (pais) {
+        filtrado = hotelsData.filter((hotel) => hotel.country === pais);
+      }
+
+      if (precio) {
+        filtrado = hotelsData.filter(
+          (hotel) => hotel.price === parseInt(precio)
+        );
+      }
+
+      if (tamaño) {
+        filtrado = hotelsData.filter(
+          (hotel) => hotel.rooms === parseInt(tamaño)
+        );
+      }
+      return filtrado;
+    } */
+
+    let filtrado = hotelsData;
+
+    const { pais, precio, tamaño } = this.props.filters;
+
+    if (pais) {
+      filtrado = hotelsData.filter((hotel) => hotel.country === pais);
+    }
+
+    if (precio) {
+      filtrado = hotelsData.filter((hotel) => hotel.price === parseInt(precio));
+    }
+
+    if (tamaño) {
+      filtrado = hotelsData.filter((hotel) => hotel.rooms === parseInt(tamaño));
+    }
+
     return (
       <div className="main">
-        {hotelsData.map((hotel) => (
+        {filtrado.map((hotel) => (
           <Card
             key={uuidv4()}
             name={hotel.name}
@@ -124,7 +163,7 @@ function OptionSelect(props) {
     <select onChange={props.select} name={props.name}>
       <option value="">{`Cualquier ${props.name}`}</option>
       {filterProp.map((valorAMostrar) => (
-        <option key={uuidv4()}>{valorAMostrar}</option>
+        <option>{valorAMostrar}</option>
       ))}
     </select>
   );
@@ -184,7 +223,7 @@ export default class App extends React.Component {
     desde: "",
     hasta: "",
     pais: undefined,
-    habitaciones: undefined,
+    tamaño: undefined,
     precio: undefined,
   };
 
