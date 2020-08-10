@@ -101,7 +101,7 @@ input {
   margin: 5px 0;
 }
 
-.dollar-opaque {
+.disabled {
   opacity: 0.2;
 }
 
@@ -122,4 +122,16 @@ input {
 .button-reserve a {
   text-decoration: none;
   color: white;
+}
+
+.no-hotels {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
+
+.error {
+  font-size: x-large;
+  color: lightcoral;
 }

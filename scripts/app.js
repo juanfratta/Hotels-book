@@ -1,21 +1,19 @@
 import hotelsData from "./scripts/data.js";
 
-const Price = () => <i className="fas fa-dollar-sign"></i>;
-const PriceTwo = () => <i className="fas fa-dollar-sign dollar-opaque"></i>;
+//COMPONENTE PRECIOS
+//Armo un array de cuatro posiciones, y según la prop que venga como price
+//utilizo una clase enabled o disabled para mostrar los íconos
 
 const GetPrices = (props) =>
   Array.from(new Array(4), (n, index) =>
-    //En realidad acá quise usar sólo el componente Price, y hacer algo así como:
-    //<Price key={`price-${index}`} style={{ opacity: index < props.prices ? 1.0 : 0.2 }} />)
-    //Si lo reviso con React Dev Tools me pasa bien la prop y no me da ningun error,
-    //pero no me genera el inline style ni ningún cambio.
-    //La solución medio pedorra que encontré es usar dos componentes :(
     index < props.prices ? (
-      <Price key={`price-${index}`} />
+      <i className="fas fa-dollar-sign" key={index}></i>
     ) : (
-      <PriceTwo key={`price-${index}`} />
+      <i className="fas fa-dollar-sign disabled" key={index}></i>
     )
   );
+
+//COMPONENTE CARD
 
 function Card(props) {
   return (
@@ -62,75 +60,52 @@ function Card(props) {
 
 //MAIN COMPONENT
 
-class Main extends React.Component {
-  render() {
-    /* 
-    ACÁ NECESITARIA HACER QUE LO FILTROS FUNCIONEN EN CONJUNTO, 
-    PERO ME TIRA ERROR CUALQUIER RETURN QUE PONGA.
-    LA OTRA OPCIÓN QUE SE ME OCURRIÓ ERA SETEAR EL ARRAY DE OBJETOS EN EL STATE USANDO comoponentDidMount,
-    Y LUEGO CADA VEZ QUE ME LLEGA UN FILTRO POR PROP, LLAMAR A componentDidUpdate LLAMAR AL prevState, 
-    y ACTUALIZAR LOS CAMBIOS MEDIANTE UN FILTER PARA CADA OCASION. Y OBVIAMENTE EL .MAP HACERLO SOBRE EL ARRAY QUE
-    ESTÁ DENTRO DEL STATE, PERO HAY TENGO UN PROBLEMA DE SINTAXIS. NO SE COMO INTERAR SOBRE EL ARRAY DENTRO DEL STATE.
-    
-    
-    function filters() {
-      let filtrado = hotelsData;
+const Main = (props) => {
+  const { pais, precio, tamaño } = props.filters;
 
-      const { pais, precio, tamaño } = this.props.filters;
+  console.log(tamaño);
 
-      if (pais) {
-        filtrado = hotelsData.filter((hotel) => hotel.country === pais);
-      }
+  const filterByCountry = pais
+    ? hotelsData.filter((hotel) => hotel.country === pais)
+    : hotelsData;
 
-      if (precio) {
-        filtrado = hotelsData.filter(
-          (hotel) => hotel.price === parseInt(precio)
-        );
-      }
+  const filterByPrice = precio
+    ? filterByCountry.filter((hotel) => hotel.price == precio)
+    : filterByCountry;
 
-      if (tamaño) {
-        filtrado = hotelsData.filter(
-          (hotel) => hotel.rooms === parseInt(tamaño)
-        );
-      }
-      return filtrado;
-    } */
+  const filterByRooms = tamaño
+    ? filterByPrice.filter((hotel) => {
+        if (tamaño === "hotel pequeño") return hotel.rooms <= 10;
+        if (tamaño === "hotel mediano")
+          return hotel.rooms > 10 && hotel.rooms <= 20;
+        if (tamaño === "hotel grande") return hotel.rooms > 20;
+      })
+    : filterByPrice;
 
-    let filtrado = hotelsData;
-
-    const { pais, precio, tamaño } = this.props.filters;
-
-    if (pais) {
-      filtrado = hotelsData.filter((hotel) => hotel.country === pais);
-    }
-
-    if (precio) {
-      filtrado = hotelsData.filter((hotel) => hotel.price === parseInt(precio));
-    }
-
-    if (tamaño) {
-      filtrado = hotelsData.filter((hotel) => hotel.rooms === parseInt(tamaño));
-    }
-
-    return (
-      <div className="main">
-        {filtrado.map((hotel) => (
-          <Card
-            key={uuidv4()}
-            name={hotel.name}
-            photo={hotel.photo}
-            description={hotel.description}
-            country={hotel.country}
-            rooms={hotel.rooms}
-            price={hotel.price}
-            desde={hotel.availabilityFrom}
-            hasta={hotel.availabilityTo}
-          />
-        ))}
-      </div>
-    );
-  }
-}
+  return filterByRooms == "" ? (
+    <div className="no-hotels">
+      <span className="error">
+        Lo sentimos, no hay hoteles que coincidan con su búsqueda : (
+      </span>
+    </div>
+  ) : (
+    <div className="main">
+      {filterByRooms.map((hotel) => (
+        <Card
+          key={uuidv4()}
+          name={hotel.name}
+          photo={hotel.photo}
+          description={hotel.description}
+          country={hotel.country}
+          rooms={hotel.rooms}
+          price={hotel.price}
+          desde={hotel.availabilityFrom}
+          hasta={hotel.availabilityTo}
+        />
+      ))}
+    </div>
+  );
+};
 
 //DATE COMPONENT
 
@@ -160,9 +135,6 @@ function DateSelect(props) {
 
 //SELECT COMPONENT
 
-//Tengo un problema con la key del map en este componente. Intenté usar el uuid por cdn y me lo toma bien.
-//Pero sintácticamente no sé cómo hacer para que funcione sin que me tire el warning.
-
 function OptionSelect(props) {
   //armo un array con la prop que deseo usar como filtro, lo ordeno y elimino los elementos repetidos.
   const filterProp = [...new Set(Array.from(props.filter))];
@@ -171,8 +143,10 @@ function OptionSelect(props) {
   return (
     <select onChange={props.select} name={props.name}>
       <option value="">{`Cualquier ${props.name}`}</option>
-      {filterProp.map((valorAMostrar) => (
-        <option>{valorAMostrar}</option>
+      {filterProp.map((valorAMostrar, index) => (
+        <option value={valorAMostrar} key={index}>
+          {valorAMostrar}
+        </option>
       ))}
     </select>
   );
@@ -182,9 +156,17 @@ function OptionSelect(props) {
 
 function FiltersContainer(props) {
   const { date, select } = props;
-  const price = hotelsData.map((element) => element.price);
-  const rooms = hotelsData.map((element) => element.rooms);
+
   const country = hotelsData.map((element) => element.country);
+  const price = hotelsData.map((element) => element.price);
+
+  //Reemplazo un string el el valor rooms
+
+  const rooms = hotelsData.map((element) => {
+    if (element.rooms <= 10) return "hotel pequeño";
+    if (element.rooms > 10 && element.rooms <= 20) return "hotel mediano";
+    if (element.rooms > 20) return "hotel grande";
+  });
 
   return (
     <div className="filters-container">
