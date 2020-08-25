@@ -107,16 +107,11 @@ function ErrorMessage(props) {
 const Main = (props) => {
   const { pais, precio, tamaño, desde, hasta } = props.filters;
 
-<<<<<<< HEAD
   let dateInverse = false;
   desde > hasta && hasta != "" ? (dateInverse = true) : (dateInverse = false);
 
   const filterByCheckIn = desde
     ? hotelsData.filter((hotel) => hotel.availabilityFrom >= Date.parse(desde))
-=======
-  const filterByCountry = pais
-    ? hotelsData.filter((hotel) => hotel.country === pais)
->>>>>>> 16bef6388d919f0bb079743247478af8e64371c9
     : hotelsData;
 
   const filterByCheckOut = hasta
@@ -229,8 +224,6 @@ function OptionSelect(props) {
   const filterProp = [...new Set(Array.from(props.filter))];
   filterProp.sort();
 
-  console.log(props);
-
   return (
     <div className="icon-filter-container">
       <i className={` ${props.icon} icon-filter`}></i>
@@ -271,7 +264,6 @@ function FiltersContainer(props) {
 
   return (
     <div className="filters-container">
-<<<<<<< HEAD
       <DateSelect date={date} valueDate={props.filters.desde} name="desde" />
       <DateSelect date={date} valueDate={props.filters.hasta} name="hasta" />
       <OptionSelect
@@ -292,13 +284,6 @@ function FiltersContainer(props) {
         name="tamaño"
         icon="fas fa-bed"
       />
-=======
-      <DateSelect date={date} name="desde" />
-      <DateSelect date={date} name="hasta" />
-      <OptionSelect select={select} filter={country} name="pais" icon={<i class="fas fa-globe"></i>}/>
-      <OptionSelect select={select} filter={price} name="precio" />
-      <OptionSelect select={select} filter={rooms} name="tamaño" />
->>>>>>> 16bef6388d919f0bb079743247478af8e64371c9
     </div>
   );
 }
