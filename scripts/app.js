@@ -1,8 +1,6 @@
 import hotelsData from "./scripts/data.js";
 
 //COMPONENTE PRECIOS
-//Armo un array de cuatro posiciones, y según la prop que venga como price
-//utilizo una clase enabled o disabled para mostrar los íconos
 
 const GetPrices = (props) =>
   Array.from(new Array(4), (n, index) =>
@@ -25,15 +23,15 @@ function Card(props) {
 
       <div className="card-text">{props.description}</div>
 
-      <div className="card-icons ">
+      <div className="icons-container">
         <div className="icon-text">
-          <i className="fas fa-map-marker"></i>
+          <i className="fas fa-map-marker icons"></i>
           <span> {props.country}</span>
         </div>
 
         <div className="icons-bottom">
           <div className="icon-text">
-            <i className="fas fa-bed"></i>
+            <i className="fas fa-bed icons"></i>
             <span> {props.rooms} habitaciones</span>
           </div>
 
@@ -58,16 +56,73 @@ function Card(props) {
   );
 }
 
+//ERROR COMPONENT
+
+function ErrorMessage(props) {
+  const {
+    dateError,
+    countryError,
+    priceError,
+    roomsError,
+    dateInverse,
+  } = props;
+  let error = "";
+
+  if (dateInverse === true) {
+    error = (
+      <div className="main-error-message">
+        Disculpe, pero salvo que que pueda viajar hacia atrás en el tiempo, es
+        imposible que pueda hacer salir de un hotel antes de haber ingresado.
+        Aunque si tiene uns máquina del tiempo, por favor no deje de contactarse
+        con la administración. Gracias.{" "}
+      </div>
+    );
+  } else if (dateError.length == "") {
+    error = (
+      <div className="main-error-message">No Hay hoteles para esa fecha</div>
+    );
+  } else if (countryError.length == "") {
+    errof = (
+      <div className="main-error-message">
+        No hay hoteles disponibles en el país seleccionado.
+      </div>
+    );
+  } else if (priceError.length == "") {
+    error = (
+      <div className="main-error-message">
+        No hay hoteles disponibles en el rango de precios seleccionado.
+      </div>
+    );
+  } else if (roomsError.length == "") {
+    error = (
+      <div className="main-error-message">
+        No hay hoteles disponibles con el tamaño seleccionado.{" "}
+      </div>
+    );
+  }
+  return <div>{error}</div>;
+}
 //MAIN COMPONENT
 
 const Main = (props) => {
-  const { pais, precio, tamaño } = props.filters;
+  const { pais, precio, tamaño, desde, hasta } = props.filters;
 
-  console.log(tamaño);
+  let dateInverse = false;
+  desde > hasta && hasta != "" ? (dateInverse = true) : (dateInverse = false);
+
+  const filterByCheckIn = desde
+    ? hotelsData.filter((hotel) => hotel.availabilityFrom >= Date.parse(desde))
+    : hotelsData;
+
+  const filterByCheckOut = hasta
+    ? filterByCheckIn.filter(
+        (hotel) => hotel.availabilityTo <= Date.parse(hasta)
+      )
+    : filterByCheckIn;
 
   const filterByCountry = pais
-    ? hotelsData.filter((hotel) => hotel.country === pais)
-    : hotelsData;
+    ? filterByCheckOut.filter((hotel) => hotel.country === pais)
+    : filterByCheckOut;
 
   const filterByPrice = precio
     ? filterByCountry.filter((hotel) => hotel.price == precio)
@@ -82,27 +137,34 @@ const Main = (props) => {
       })
     : filterByPrice;
 
-  return filterByRooms == "" ? (
-    <div className="no-hotels">
-      <span className="error">
-        Lo sentimos, no hay hoteles que coincidan con su búsqueda : (
-      </span>
-    </div>
-  ) : (
-    <div className="main">
-      {filterByRooms.map((hotel) => (
-        <Card
-          key={uuidv4()}
-          name={hotel.name}
-          photo={hotel.photo}
-          description={hotel.description}
-          country={hotel.country}
-          rooms={hotel.rooms}
-          price={hotel.price}
-          desde={hotel.availabilityFrom}
-          hasta={hotel.availabilityTo}
-        />
-      ))}
+  return (
+    <div>
+      {" "}
+      <div>
+        {" "}
+        <ErrorMessage
+          dateInverse={dateInverse}
+          dateError={filterByCheckOut}
+          countryError={filterByCountry}
+          priceError={filterByPrice}
+          roomsError={filterByRooms}
+        />{" "}
+      </div>
+      <div className="main">
+        {filterByRooms.map((hotel) => (
+          <Card
+            key={uuidv4()}
+            name={hotel.name}
+            photo={hotel.photo}
+            description={hotel.description}
+            country={hotel.country}
+            rooms={hotel.rooms}
+            price={hotel.price}
+            desde={hotel.availabilityFrom}
+            hasta={hotel.availabilityTo}
+          />
+        ))}
+      </div>{" "}
     </div>
   );
 };
@@ -110,27 +172,45 @@ const Main = (props) => {
 //DATE COMPONENT
 
 function DateSelect(props) {
-  {
-    const inputLimit = new Date()
-      .toLocaleDateString("es-AR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      })
-      .split("/")
-      .reverse()
-      .join("-");
-    return (
-      <div>
-        <input
-          type="date"
-          name={props.name}
-          onChange={props.date}
-          min={inputLimit}
-        ></input>
-      </div>
-    );
-  }
+  const inputLimit = new Date()
+    .toLocaleDateString("es-AR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .split("/")
+    .reverse()
+    .join("-");
+
+  const date = new Date(props.valueDate)
+    .toLocaleDateString("es-AR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .split("/")
+    .reverse()
+    .join("-");   
+
+    /* const onDate = (e) => {
+       const newDate = e.target.value
+       return newDate
+    } */
+
+  return (
+    <div className="icon-filter-container">
+      <i className="far fa-calendar-times icon-filter" name="delete"></i>
+      <input
+        className="input-filter"
+        type="date"
+        name={props.name}
+        onChange={props.date}
+        min={inputLimit}
+      /*   onChange={onDate}
+ */
+      ></input>
+    </div>
+  );
 }
 
 //SELECT COMPONENT
@@ -141,14 +221,21 @@ function OptionSelect(props) {
   filterProp.sort((a, b) => a - b);
 
   return (
-    <select onChange={props.select} name={props.name}>
-      <option value="">{`Cualquier ${props.name}`}</option>
-      {filterProp.map((valorAMostrar, index) => (
-        <option value={valorAMostrar} key={index}>
-          {valorAMostrar}
-        </option>
-      ))}
-    </select>
+    <div className="icon-filter-container">
+      <i className={` ${props.icon} icon-filter`}></i>
+      <select
+        className="input-filter"
+        onChange={props.select}
+        name={props.name}
+      >
+        <option value="">{`Cualquier ${props.name}`}</option>
+        {filterProp.map((valorAMostrar, index) => (
+          <option value={valorAMostrar} key={index}>
+            {valorAMostrar}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }
 
@@ -170,11 +257,26 @@ function FiltersContainer(props) {
 
   return (
     <div className="filters-container">
-      <DateSelect date={date} name="desde" />
-      <DateSelect date={date} name="hasta" />
-      <OptionSelect select={select} filter={country} name="pais" />
-      <OptionSelect select={select} filter={price} name="precio" />
-      <OptionSelect select={select} filter={rooms} name="tamaño" />
+      <DateSelect date={date} valueDate={props.filters.desde} name="desde" />
+      <DateSelect date={date} valueDate={props.filters.hasta} name="hasta" />
+      <OptionSelect
+        select={select}
+        filter={country}
+        name="pais"
+        icon="fas fa-globe"
+      />
+      <OptionSelect
+        select={select}
+        filter={price}
+        name="precio"
+        icon="fas fa-dollar-sign"
+      />
+      <OptionSelect
+        select={select}
+        filter={rooms}
+        name="tamaño"
+        icon="fas fa-bed"
+      />
     </div>
   );
 }
@@ -193,15 +295,29 @@ function Header(props) {
 
   return (
     <div className="header">
-      <h1 className="title">Hoteles</h1>
+      <h1 className="title">
+        <a href="" className="title-page">
+          Hoteles
+        </a>
+      </h1>
       {desde && hasta ? (
-        <p>
-          Desde el
-          <b> {desde.toLocaleString("es-AR", options)}</b>, hasta el
-          <b> {hasta.toLocaleString("es-AR", optionsTwo)}</b>.
-        </p>
+        desde < hasta ? (
+          <p className="header-message">
+            {" "}
+            Desde el
+            <b> {desde.toLocaleString("es-AR", options)}</b>, hasta el
+            <b> {hasta.toLocaleString("es-AR", optionsTwo)}</b>.
+          </p>
+        ) : (
+          <p className="header-message">
+            El día de ingreso no puede ser igual o anterior al día de egreso.
+            Por favor, seleccione un rango de fechas correcto.
+          </p>
+        )
       ) : (
-        <p>Por favor, seleccione las fechas en que desea reservar.</p>
+        <p className="header-message">
+          Por favor, seleccione las fechas en que desea reservar.
+        </p>
       )}
     </div>
   );

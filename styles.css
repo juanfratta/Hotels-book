@@ -5,33 +5,66 @@
 }
 
 .header {
-  background: #00d1b2;
+  background: linear-gradient(45deg, #ffffff, #b4aef55e);
   height: 20%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   padding: 2em;
-  color: white;
+  color: lightslategray;
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
+.title-page {
+  text-decoration: none;
+  color: lightslategray;
+  font-family: "Paytone One", sans-serif;
+}
+
+.header-message {
+  border-top: solid 1px lightgray;
+  padding-top: 5px;
+}
+
 .filters-container {
-  background: #209cee;
+  background: linear-gradient(
+    160deg,
+    rgba(137, 6, 237, 1) 0%,
+    rgba(68, 65, 249, 1) 100%
+  );
   color: white;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  padding: 10px;
 }
 
 .filters-container select,
 input {
-  padding: 5px;
   color: grey;
   margin: 5px;
   border: none;
   border-radius: 5px;
+}
+
+.icon-filter-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon-filter {
+  position: absolute;
+  color: lightslategrey;
+  margin-left: 10px;
+  z-index: 1;
+}
+
+.input-filter {
+  padding: 5px 5px 5px 30px;
+  position: relative;
 }
 
 .main {
@@ -43,12 +76,14 @@ input {
 
 .card {
   width: 300px;
-  height: 100%;
-  border: 1px solid rgb(199, 196, 196);
+  border: 1px solid rgb(235, 235, 235);
   font-family: sans-serif;
-  /*color: grey;*/
-  position: relative;
+  box-shadow: -6px 5px 5px #e6e6e6;
   margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .card-image img {
@@ -65,9 +100,10 @@ input {
   font-size: 0.8em;
   padding: 10px;
   line-height: 1.5em;
+  color: grey;
 }
 
-.card-icons {
+.icons-container {
   padding: 10px;
   font-size: 0.8em;
 }
@@ -79,44 +115,48 @@ input {
 
 .icon-text {
   display: inline-block;
-  background: lightgrey;
+  background: #f3f3f3;
   padding: 0px 5px 0px 0px;
   border-radius: 5px;
   margin: 5px 0;
   height: 22px;
+  color: grey;
 }
 
-.fa-map-marker {
-  background: #209cee;
-  color: white;
+.icons {
+  background: lightsalmon;
   padding: 5px 10px;
+  color: white;
   border-radius: 5px;
 }
 
 .icons-price {
-  background: #209cee;
+  background: lightsalmon;
   padding: 5px 10px;
   color: white;
   border-radius: 5px;
-  margin: 5px 0;
+  margin: 3px 0;
+}
+
+.icons-price i {
+  padding: 0 2px;
 }
 
 .disabled {
   opacity: 0.2;
 }
 
-.fa-bed {
-  background: #209cee;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-
 .button-reserve {
-  background: #00d1b2;
+  background: linear-gradient(
+    160deg,
+    rgba(137, 6, 237, 1) 0%,
+    rgba(68, 65, 249, 1) 100%
+  );
   color: white;
   padding: 15px 0;
   text-align: center;
+  bottom: 0;
+  width: 100%;
 }
 
 .button-reserve a {
@@ -131,7 +171,17 @@ input {
   height: 80vh;
 }
 
-.error {
-  font-size: x-large;
+
+.main-error-message {
+  font-size: large;
   color: lightcoral;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 200px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
+
+
