@@ -5,9 +5,9 @@ import hotelsData from "./scripts/data.js";
 const GetPrices = (props) =>
   Array.from(new Array(4), (n, index) =>
     index < props.prices ? (
-      <i className="fas fa-dollar-sign" key={index}></i>
+      <i className="fas fa-dollar-sign price" key={index}></i>
     ) : (
-      <i className="fas fa-dollar-sign disabled" key={index}></i>
+      <i className="fas fa-dollar-sign price-disabled" key={index}></i>
     )
   );
 
@@ -107,11 +107,16 @@ function ErrorMessage(props) {
 const Main = (props) => {
   const { pais, precio, tamaño, desde, hasta } = props.filters;
 
+<<<<<<< HEAD
   let dateInverse = false;
   desde > hasta && hasta != "" ? (dateInverse = true) : (dateInverse = false);
 
   const filterByCheckIn = desde
     ? hotelsData.filter((hotel) => hotel.availabilityFrom >= Date.parse(desde))
+=======
+  const filterByCountry = pais
+    ? hotelsData.filter((hotel) => hotel.country === pais)
+>>>>>>> 16bef6388d919f0bb079743247478af8e64371c9
     : hotelsData;
 
   const filterByCheckOut = hasta
@@ -125,7 +130,12 @@ const Main = (props) => {
     : filterByCheckOut;
 
   const filterByPrice = precio
-    ? filterByCountry.filter((hotel) => hotel.price == precio)
+    ? filterByCountry.filter((hotel) => {
+        if (precio === "$") return hotel.price === 1;
+        if (precio === "$$") return hotel.price === 2;
+        if (precio === "$$$") return hotel.price === 3;
+        if (precio === "$$$$") return hotel.price === 4;
+      })
     : filterByCountry;
 
   const filterByRooms = tamaño
@@ -216,9 +226,10 @@ function DateSelect(props) {
 //SELECT COMPONENT
 
 function OptionSelect(props) {
-  //armo un array con la prop que deseo usar como filtro, lo ordeno y elimino los elementos repetidos.
   const filterProp = [...new Set(Array.from(props.filter))];
-  filterProp.sort((a, b) => a - b);
+  filterProp.sort();
+
+  console.log(props);
 
   return (
     <div className="icon-filter-container">
@@ -245,9 +256,12 @@ function FiltersContainer(props) {
   const { date, select } = props;
 
   const country = hotelsData.map((element) => element.country);
-  const price = hotelsData.map((element) => element.price);
-
-  //Reemplazo un string el el valor rooms
+  const price = hotelsData.map((element) => {
+    if (element.price === 1) return "$";
+    if (element.price === 2) return "$$";
+    if (element.price === 3) return "$$$";
+    if (element.price === 4) return "$$$$";
+  });
 
   const rooms = hotelsData.map((element) => {
     if (element.rooms <= 10) return "hotel pequeño";
@@ -257,6 +271,7 @@ function FiltersContainer(props) {
 
   return (
     <div className="filters-container">
+<<<<<<< HEAD
       <DateSelect date={date} valueDate={props.filters.desde} name="desde" />
       <DateSelect date={date} valueDate={props.filters.hasta} name="hasta" />
       <OptionSelect
@@ -277,6 +292,13 @@ function FiltersContainer(props) {
         name="tamaño"
         icon="fas fa-bed"
       />
+=======
+      <DateSelect date={date} name="desde" />
+      <DateSelect date={date} name="hasta" />
+      <OptionSelect select={select} filter={country} name="pais" icon={<i class="fas fa-globe"></i>}/>
+      <OptionSelect select={select} filter={price} name="precio" />
+      <OptionSelect select={select} filter={rooms} name="tamaño" />
+>>>>>>> 16bef6388d919f0bb079743247478af8e64371c9
     </div>
   );
 }
