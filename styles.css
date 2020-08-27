@@ -184,4 +184,7 @@ input {
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
-
+.main-error-detail {
+  color: lightblue;
+  font-size: 0.2em;
+}

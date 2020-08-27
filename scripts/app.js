@@ -66,15 +66,14 @@ function ErrorMessage(props) {
     roomsError,
     dateInverse,
   } = props;
+
   let error = "";
 
   if (dateInverse === true) {
     error = (
       <div className="main-error-message">
-        Disculpe, pero salvo que que pueda viajar hacia atrás en el tiempo, es
-        imposible que pueda hacer salir de un hotel antes de haber ingresado.
-        Aunque si tiene uns máquina del tiempo, por favor no deje de contactarse
-        con la administración. Gracias.{" "}
+        Disculpe, pero es imposible que pueda salir de un hotel antes de haber ingresado : )
+        Por favor, seleccione un rango de fechas correcto. Gracias.{" "}
       </div>
     );
   } else if (dateError.length == "") {
@@ -177,6 +176,7 @@ const Main = (props) => {
 //DATE COMPONENT
 
 function DateSelect(props) {
+
   const inputLimit = new Date()
     .toLocaleDateString("es-AR", {
       year: "numeric",
@@ -187,7 +187,9 @@ function DateSelect(props) {
     .reverse()
     .join("-");
 
-  const date = new Date(props.valueDate)
+  let date = ""
+
+  if(props.valueDate) { date = new Date(props.valueDate)
     .toLocaleDateString("es-AR", {
       year: "numeric",
       month: "2-digit",
@@ -195,28 +197,30 @@ function DateSelect(props) {
     })
     .split("/")
     .reverse()
-    .join("-");   
-
-    /* const onDate = (e) => {
-       const newDate = e.target.value
-       return newDate
-    } */
+    .join("-"); 
+  }
 
   return (
+    
     <div className="icon-filter-container">
-      <i className="far fa-calendar-times icon-filter" name="delete"></i>
+      <i className="fas fa-sync-alt icon-filter" 
+      onClick={()=>props.deleteDate(props.name)} 
+      name={props.name}
+      >
+
+      </i>
       <input
         className="input-filter"
         type="date"
         name={props.name}
         onChange={props.date}
         min={inputLimit}
-      /*   onChange={onDate}
- */
+        value={date}
       ></input>
     </div>
   );
 }
+
 
 //SELECT COMPONENT
 
@@ -246,7 +250,9 @@ function OptionSelect(props) {
 // FILTERS COMPONENT
 
 function FiltersContainer(props) {
-  const { date, select } = props;
+
+  const { date, select, deleteDate } = props;
+  const {desde, hasta} = props.filters;
 
   const country = hotelsData.map((element) => element.country);
   const price = hotelsData.map((element) => {
@@ -264,8 +270,21 @@ function FiltersContainer(props) {
 
   return (
     <div className="filters-container">
-      <DateSelect date={date} valueDate={props.filters.desde} name="desde" />
-      <DateSelect date={date} valueDate={props.filters.hasta} name="hasta" />
+     
+      <DateSelect 
+        date={date} 
+        deleteDate={deleteDate} 
+        valueDate={desde} 
+        name="desde" 
+        />
+
+      <DateSelect 
+        date={date} 
+        deleteDate={deleteDate} 
+        valueDate={hasta}  
+        name="hasta" 
+        />
+
       <OptionSelect
         select={select}
         filter={country}
@@ -317,13 +336,13 @@ function Header(props) {
           </p>
         ) : (
           <p className="header-message">
-            El día de ingreso no puede ser igual o anterior al día de egreso.
+            El día de ingreso no puede ser igual o anterior al día de salida.
             Por favor, seleccione un rango de fechas correcto.
           </p>
         )
       ) : (
         <p className="header-message">
-          Por favor, seleccione las fechas en que desea reservar.
+          Por favor seleccione las fechas en que desea reservar.
         </p>
       )}
     </div>
@@ -347,11 +366,18 @@ export default class App extends React.Component {
     });
   };
 
+  deleteDate = (e) => {
+    this.setState({[e]:""})
+  }
+
   handlerSelect = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  
+
   render() {
+    
     return (
       <div>
         <Header filters={this.state} />
@@ -359,7 +385,9 @@ export default class App extends React.Component {
         <FiltersContainer
           filters={this.state}
           date={this.handlerDate}
+          deleteDate={this.deleteDate}
           select={this.handlerSelect}
+
         />
 
         <Main filters={this.state} />
