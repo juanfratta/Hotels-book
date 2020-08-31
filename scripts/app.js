@@ -73,7 +73,7 @@ function ErrorMessage(props) {
     error = (
       <div className="main-error-message">
         Disculpe, pero es imposible que pueda salir de un hotel antes de haber ingresado : )
-        Por favor, seleccione un rango de fechas correcto. Gracias.{" "}
+        Por favor, seleccione un rango de fechas correcto. Gracias.
       </div>
     );
   } else if (dateError.length == "") {
