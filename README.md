@@ -8,6 +8,8 @@ El proyecto se trabajó enteramente con React, y todo el setup de la app se hizo
 
 Se utilizó: React, Google Fonts, FontAwesome y la libería uuid. 
 
+<a href="https://juanfratta.github.io/Hotels-book/.">Live DEMO</a>
+
 
 Como parte de la consigna:
 <ul>
