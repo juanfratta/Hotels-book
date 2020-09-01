@@ -1,6 +1,6 @@
 # Hotels book
 
-Aplicacion de búsqueda y filtrado de hoteles. Primer proyecto del curso de front end avanzado con React en <a href="https://www.acamica.com/"> Acámica. </a> 
+Aplicacion de búsqueda y filtrado de hoteles. Primer proyecto del curso de frontend avanzado con React en <a href="https://www.acamica.com/"> Acámica. </a> 
 
 La app consiste en una plataforma que permite filtrar de manera dinámica un listado de hoteles, ya sea por precio, tamaño, lugar o fecha de disponibilidad. 
 
