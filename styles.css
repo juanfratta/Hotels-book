@@ -5,27 +5,28 @@
 }
 
 .header {
-  background: linear-gradient(45deg, #ffffff, #b4aef55e);
+  background: white;
   height: 20%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   padding: 2em;
-  color: lightslategray;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  color: grey;
+  font-family: sans-serif;
 }
 
 .title-page {
   text-decoration: none;
-  color: lightslategray;
-  font-family: "Paytone One", sans-serif;
+  color: #6F15F1;  
+  font-family: 'Spartan', sans-serif;
+  font-weight: 900;
 }
 
 .header-message {
-  border-top: solid 1px lightgray;
+  border-top: solid 0.5px lightgray;
   padding-top: 5px;
+  font-size: 0.9em;
 }
 
 .filters-container {
@@ -173,6 +174,7 @@ input {
 
 
 .main-error-message {
+ 
   font-size: large;
   color: lightcoral;
   height: 200px;
@@ -180,8 +182,6 @@ input {
   justify-content: center;
   align-items: center;
   padding: 0 200px;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: 'Courier New', Courier, monospace;
 }
-
 

@@ -10,12 +10,16 @@
       crossorigin="anonymous"
     ></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Paytone+One&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Spartan:wght@800&display=swap"
       rel="stylesheet"
     />
   </head>
 
   <body>
+    <!--APP-->
+    <div id="app"></div>
+
+    <<!--React, React Doom & Babel-->
     <script
       crossorigin
       src="https://unpkg.com/react@16/umd/react.development.js"
@@ -28,15 +32,63 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
 
-    <script
-      src="https://kit.fontawesome.com/6890228785.js"
-      crossorigin="anonymous"
-    ></script>
+    <!--uuid-->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.2.0/uuidv4.min.js"></script>
 
+    <!--scritps components-->
+
     <script
       src="./scripts/data.js"
+      data-plugins="transform-es2015-modules-umd"
+      type="text/babel"
+    ></script>
+
+    <script
+      src="./scripts/components/header.js"
+      data-plugins="transform-es2015-modules-umd"
+      type="text/babel"
+    ></script>
+    <script
+      src="./scripts/components/optionSelect.js"
+      data-plugins="transform-es2015-modules-umd"
+      type="text/babel"
+    ></script>
+    <script
+      src="./scripts/components/dateSelect.js"
+      data-plugins="transform-es2015-modules-umd"
+      type="text/babel"
+    ></script>
+
+    <script
+      src="./scripts/components/filtersContainer.js"
+      data-plugins="transform-es2015-modules-umd"
+      type="text/babel"
+    ></script>
+    <script
+      src="./scripts/components/errorMessage.js"
+      data-plugins="transform-es2015-modules-umd"
+      type="text/babel"
+    ></script>
+    <script
+      src="./scripts/components/getPrices.js"
+      data-plugins="transform-es2015-modules-umd"
+      type="text/babel"
+    ></script>
+    <script
+      src="./scripts/components/card.js"
+      data-plugins="transform-es2015-modules-umd"
+      type="text/babel"
+    ></script>
+
+    <script
+      src="./scripts/components/main.js"
+      data-plugins="transform-es2015-modules-umd"
+      type="text/babel"
+    ></script>
+
+    <script
+      src="./scripts/components/header.js"
       data-plugins="transform-es2015-modules-umd"
       type="text/babel"
     ></script>
@@ -46,7 +98,5 @@
       data-plugins="transform-es2015-modules-umd, transform-class-properties"
       type="text/babel"
     ></script>
-
-    <div id="app"></div>
   </body>
 </html>

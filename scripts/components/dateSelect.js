@@ -1,0 +1,43 @@
+export const DateSelect = (props) => {
+  const inputLimit = new Date()
+    .toLocaleDateString("es-AR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .split("/")
+    .reverse()
+    .join("-");
+
+  let date = "";
+
+  if (props.valueDate) {
+    date = new Date(props.valueDate)
+      .toLocaleDateString("es-AR", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+      .split("/")
+      .reverse()
+      .join("-");
+  }
+
+  return (
+    <div className="icon-filter-container">
+      <i
+        className="fas fa-sync-alt icon-filter"
+        onClick={() => props.deleteDate(props.name)}
+        name={props.name}
+      ></i>
+      <input
+        className="input-filter"
+        type="date"
+        name={props.name}
+        onChange={props.date}
+        min={inputLimit}
+        value={date}
+      ></input>
+    </div>
+  );
+};
