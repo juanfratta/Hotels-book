@@ -187,7 +187,7 @@ function DateSelect(props) {
     .reverse()
     .join("-");
 
-  const date = new Date(props.valueDate)
+  /* Esto define el value trayendolo como prop y funciona// const date = new Date(props.valueDate)
     .toLocaleDateString("es-AR", {
       year: "numeric",
       month: "2-digit",
@@ -195,12 +195,15 @@ function DateSelect(props) {
     })
     .split("/")
     .reverse()
-    .join("-");   
+    .join("-");    */
+  const date = "";
+  const onDate = (e, date) => {
+    console.log(e.target.value)
+    date === e.target.value;
+    return date
+  };
 
-    /* const onDate = (e) => {
-       const newDate = e.target.value
-       return newDate
-    } */
+  console.log(date);
 
   return (
     <div className="icon-filter-container">
@@ -211,8 +214,9 @@ function DateSelect(props) {
         name={props.name}
         onChange={props.date}
         min={inputLimit}
-      /*   onChange={onDate}
- */
+        value={date}
+        //Este value funciona trayendo el input como prop value={date}
+        onChange={onDate}
       ></input>
     </div>
   );
