@@ -13,8 +13,10 @@ export const Main = (props) => {
 
   const checkOut = moment(hasta).format("YYYY-MM-DD");
 
+  const arrayHotels = !dateInverse ? hotelsData : [];
+
   const filterByCheckIn = desde
-    ? hotelsData.filter(
+    ? arrayHotels.filter(
         (hotel) =>
           moment(hotel.availabilityFrom).format("YYYY-MM-DD") <= checkIn &&
           moment(hotel.availabilityTo).format("YYYY-MM-DD") >= checkIn
