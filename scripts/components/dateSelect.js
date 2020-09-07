@@ -12,15 +12,7 @@ export const DateSelect = (props) => {
   let date = "";
 
   if (props.valueDate) {
-    date = new Date(props.valueDate)
-      .toLocaleDateString("es-AR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      })
-      .split("/")
-      .reverse()
-      .join("-");
+    date = moment(props.valueDate).format("YYYY-MM-DD");
   }
 
   return (

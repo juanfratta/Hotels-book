@@ -1,20 +1,31 @@
 import { Card } from "./card.js";
 import { ErrorMessage } from "./errorMessage.js";
-import { hotelsData } from "../data.js";
+import { hotelsData } from "data.js";
 
 export const Main = (props) => {
   const { pais, precio, tamaño, desde, hasta } = props.filters;
 
   let dateInverse = false;
+
   desde > hasta && hasta != "" ? (dateInverse = true) : (dateInverse = false);
 
+  const checkIn = moment(desde).format("YYYY-MM-DD");
+
+  const checkOut = moment(hasta).format("YYYY-MM-DD");
+
   const filterByCheckIn = desde
-    ? hotelsData.filter((hotel) => hotel.availabilityFrom >= Date.parse(desde))
+    ? hotelsData.filter(
+        (hotel) =>
+          moment(hotel.availabilityFrom).format("YYYY-MM-DD") <= checkIn &&
+          moment(hotel.availabilityTo).format("YYYY-MM-DD") >= checkIn
+      )
     : hotelsData;
 
   const filterByCheckOut = hasta
     ? filterByCheckIn.filter(
-        (hotel) => hotel.availabilityTo <= Date.parse(hasta)
+        (hotel) =>
+          moment(hotel.availabilityFrom).format("YYYY-MM-DD") <= checkOut &&
+          moment(hotel.availabilityTo).format("YYYY-MM-DD") >= checkOut
       )
     : filterByCheckIn;
 

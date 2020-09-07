@@ -1,12 +1,5 @@
 export const Header = (props) => {
   const { desde, hasta } = props.filters;
-  const options = { weekday: "long", month: "long", day: "numeric" };
-  const optionsTwo = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
 
   return (
     <div className="header">
@@ -20,8 +13,13 @@ export const Header = (props) => {
           <p className="header-message">
             {" "}
             Desde el
-            <b> {desde.toLocaleString("es-AR", options)}</b>, hasta el
-            <b> {hasta.toLocaleString("es-AR", optionsTwo)}</b>.
+            <b> {moment(desde).locale("es").format("DD [de] MMMM")}</b>, hasta
+            el
+            <b>
+              {" "}
+              {moment(hasta).locale("es").format("DD [de] MMMM [de] YYYY")}
+            </b>
+            .
           </p>
         ) : (
           <p className="header-message">

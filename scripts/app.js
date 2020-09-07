@@ -13,7 +13,7 @@ class App extends React.Component {
 
   handlerDate = (e) => {
     this.setState({
-      [e.target.name]: new Date(e.target.value.replace(/-/g, "/")),
+      [e.target.name]: moment(e.target.value).format("YYYY-MM-DD"),
     });
   };
 
